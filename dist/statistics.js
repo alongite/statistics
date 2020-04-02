@@ -90981,8 +90981,11 @@ module.exports = function(originalModule) {
 
 var mean = __webpack_require__(/*! ./mean */ "./src/mean.js");
 
+var medians = __webpack_require__(/*! ./medians */ "./src/medians.js");
+
 module.exports = {
-  mean: mean
+  mean: mean,
+  medians: medians
 };
 
 /***/ }),
@@ -91012,6 +91015,59 @@ function mean(nums) {
 
 module.exports = mean;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
+
+/***/ }),
+
+/***/ "./src/medians.js":
+/*!************************!*\
+  !*** ./src/medians.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _require = __webpack_require__(/*! mathjs */ "./node_modules/mathjs/main/esm/index.js"),
+    add = _require.add,
+    bignumber = _require.bignumber;
+
+function medians(nums) {
+  var len = nums.length;
+  var odd = !(len % 2);
+  var middle = odd ? len / 2 : Math.ceil(len / 2);
+
+  if (odd) {
+    var n1 = selectNBig(nums, middle + 1);
+    var n2 = selectNBig(nums, middle);
+    return add(bignumber(n1), bignumber(n2)) / 2;
+  } else {
+    return selectNBig(nums, middle);
+  }
+}
+
+function selectNBig(arr, n) {
+  var left = [];
+  var right = [];
+  var flag = arr[0];
+
+  for (var i = 1; i < arr.length; i++) {
+    var num = arr[i];
+
+    if (isNaN(num)) {
+      num = 0;
+    }
+
+    num > flag ? right.push(num) : left.push(num);
+  }
+
+  if (left.length + 1 === n) {
+    return flag;
+  } else if (left.length >= n) {
+    return selectNBig(left, n);
+  } else {
+    return selectNBig(right, n - left.length - 1);
+  }
+}
+
+module.exports = medians;
 
 /***/ })
 
