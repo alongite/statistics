@@ -4,17 +4,26 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
+    devtool: 'source-map',
     output: {
         filename: 'statistics.js',
-        path: path.resolve(__dirname, '../dist')
+        path: path.resolve(__dirname, '../dist'),
+        libraryTarget: 'umd',
+        library: 'statistics'
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
+        extensions: ['.js', '.json']
     },
     module: {
         rules: [
             {
-                test: /\.(ts|js)x?$/,
+                enforce: 'pre',
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader'
+            },
+            {
+                test: /\.js$/,
                 use: 'babel-loader',
                 exclude: /node_modules/
             }

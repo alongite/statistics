@@ -10,7 +10,6 @@ module.exports = {
                 }
             }
         ],
-        "@babel/typescript"
     ],
     "plugins": [
         "@babel/plugin-transform-runtime",
